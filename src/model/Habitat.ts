@@ -205,4 +205,74 @@ export class Habitat {
             return insertResult;
         }
     }
+    /**
+ * Remove um habitat do banco de dados
+ * @param idHabitat ID do habitat a ser removido
+ * @returns **true** caso removido com sucesso, **false** caso ocorra algum problema
+ */
+static async removerHabitat(idHabitat: number): Promise<Boolean> {
+    // Variável para controlar o resultado da função
+    let queryResult = false;
+    
+    try {
+        // Query para deletar o habitat da tabela habitat
+        const queryDeleteHabitat = `DELETE FROM habitat WHERE idHabitat=${idHabitat}`;
+
+        // Executando a query
+        await database.query(queryDeleteHabitat)
+        // Testar o resultado da query
+        .then((result) => {
+            // Se o resultado for diferente de zero, a query foi executada com sucesso
+            if(result.rowCount !== 0) {
+                // atribui o valor VERDADEIRO a queryResult
+                queryResult = true;
+            }
+        })
+
+        // Retorna o resultado da função
+        return queryResult;
+    // Caso ocorra algum erro
+    } catch (error) {
+        // Exibe o erro no console
+        console.log(`Erro na consulta: ${error}`);
+        // Retorna a variável queryResult com valor FALSE
+        return queryResult;
+    }
 }
+
+    /**
+ * Atualiza as informações de um habitat no banco de dados
+ * @param habitat Objeto habitat contendo as informações atualizadas
+ * @param idHabitat ID do habitat a ser atualizado
+ * @returns **true** caso a atualização seja feita, **false** caso ocorra algum problema
+ */
+
+    static async atualizarHabitat(habitat: Habitat, idHabitat: number): Promise<Boolean> {
+        // Variável para controlar o resultado da função
+        let queryResult = false;
+    
+        try {
+            // Query para alterar o habitat da tabela habitat
+            const queryUpdateHabitat = `UPDATE habitat SET
+                                            nomeHabitat='${habitat.getNomeHabitat().toUpperCase()}'
+                                        WHERE idHabitat=${idHabitat}`;
+            await database.query(queryUpdateHabitat)
+            // Testar o resultado da query
+            .then((result) => {
+                // Se o resultado for diferente de zero, a query foi executada com sucesso
+                if (result.rowCount !== 0) {      
+                    // atribui o valor VERDADEIRO a queryResult                 
+                    queryResult = true;
+                }
+            })
+            // Retorna o resultado da função
+            return queryResult;
+        } catch (error) {
+            // Exibe o erro no console
+            console.log(`Erro na consulta: ${error}`);
+            // Retorna a variável queryResult com valor FALSE
+            return queryResult;
+        }
+    }
+ }
+
