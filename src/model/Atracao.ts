@@ -10,6 +10,9 @@ const database = new DatabaseModel().pool;
  * Representa uma atração em um zoológico.
  */
 export class Atracao {
+    setHabitatAtracao(habitat: Habitat) {
+        throw new Error('Method not implemented.');
+    }
 
     /**
      * O nome da atração.
